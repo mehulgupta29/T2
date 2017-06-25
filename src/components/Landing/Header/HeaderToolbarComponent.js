@@ -42,11 +42,13 @@ const styles = {
     float: 'right'
   },
   welcomeUser: {
-    padding: '5px',
-    display: 'inline-block'
+    padding: '5px 10px',
+    display: 'inline-block',
+    fontSize: '15px'
   },
   logoutBtn: {
-    padding: '5px',
-    float: 'right'
+    padding: '5px 10px',
+    float: 'right',
+    border: '0 solid transparent'
   }
 };
