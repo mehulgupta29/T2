@@ -25,12 +25,13 @@ class LoginComponent extends React.Component {
     event.preventDefault();
 
     const {firebase, dispatch} = this.props;
+    const that = this;
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider).then(function(result) {
 
       // This gives you a Google Access Token. You can use it to access the Google API.
       const token = result.credential.accessToken;
-      this.setState({userToken: token});
+      that.setState({userToken: token});
 
       // The signed-in user info.
       const user = result.user;
@@ -38,7 +39,7 @@ class LoginComponent extends React.Component {
         email: user.email,
         uid: user.uid
       };
-      dispatch(actions.setNewUserData(USER));
+      dispatch(actions.setNewUserData(USER, firebase));
     }).catch(error => {
 
       // if (errorCode === 'auth/wrong-password') {

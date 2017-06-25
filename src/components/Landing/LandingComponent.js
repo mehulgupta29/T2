@@ -1,8 +1,8 @@
 import React from 'react';
-import {Button, Glyphicon} from 'react-bootstrap';
 import * as firebase from 'firebase';
 import {connect} from 'react-redux';
 import actions from '../../actions/actions';
+import HeaderComponent from './Header/HeaderComponent';
 
 class LandingComponent extends React.Component {
 
@@ -13,13 +13,10 @@ class LandingComponent extends React.Component {
   }
 
   render() {
-    const {user} = this.props;
-
     return (
-      <div style={landingStyles}>
-        Welcome, {user.email}
-        <Button onClick={(event) => this.handleUserLogout(event)}><Glyphicon glyph="log-out" /> Logout</Button>
-      </div>
+      <HeaderComponent
+        handleUserLogout={(event) => this.handleUserLogout(event)}
+        {... this.props}/>
     );
   }
 
@@ -43,7 +40,3 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(LandingComponent);
-
-const landingStyles = {
-  backgroundColor: '#158dff'
-};
