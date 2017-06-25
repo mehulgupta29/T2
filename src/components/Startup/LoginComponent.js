@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import actions from '../../actions/actions';
 import {Button} from 'react-bootstrap';
 
 class LoginComponent extends React.Component {
@@ -6,70 +8,50 @@ class LoginComponent extends React.Component {
   constructor(props){
     super(props);
     this.state = {
+      userToken: ''
     };
   }
 
   render() {
-    const {firebase} = this.props;
-
     return (
       <div style={loginStyles}>
-        <Button onClick={() => this.handleLogin()}>Login</Button>
-        <Button onClick={() => this.handleSignUp()}>Sign Up</Button>
+        <Button onClick={(event) => this.handleLogin(event)}>Login using Google</Button>
+        <Button onClick={(event) => this.handleSignUp(event)} disabled={true}>Sign Up</Button>
       </div>
     );
   }
 
-  handleLogin() {
-    // alert("Sign In");
-    const {firebase} = this.props;
+  handleLogin(event) {
+    event.preventDefault();
 
+    const {firebase, dispatch} = this.props;
     const provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider).then(function(result) {
+
       // This gives you a Google Access Token. You can use it to access the Google API.
-      var token = result.credential.accessToken;
+      const token = result.credential.accessToken;
+      this.setState({userToken: token});
+
       // The signed-in user info.
-      var user = result.user;
+      dispatch(actions.setNewUserData(result.user));
 
-      console.log("Google User: ", token, " user: ", user);
-    }).catch(function(error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // [START_EXCLUDE]
-      if (errorCode === 'auth/wrong-password') {
-        alert('Wrong password.');
-      } else {
-        alert(errorMessage);
-      }
+      console.log("Google User: ", token, " user: ", result.user);
+
+    }).catch(error => {
+
+      // if (errorCode === 'auth/wrong-password') {
+      //   alert('Wrong password.');
+      // } else {
+      //   alert(errorMessage);
+      // }
       console.log(error);
-      // The email of the user's account used.
-      var email = error.email;
-      // The firebase.auth.AuthCredential type that was used.
-      var credential = error.credential;
+
     });
-
-    console.log("sign in done");
-
-    // const userAuth = firebase.auth().signInWithEmailAndPassword('mgupta4@stevens.edu', 'Stevens135455').catch(function(error) {
-    //   // Handle Errors here.
-    //   var errorCode = error.code;
-    //   var errorMessage = error.message;
-    //   // [START_EXCLUDE]
-    //   if (errorCode === 'auth/wrong-password') {
-    //     alert('Wrong password.');
-    //   } else {
-    //     alert(errorMessage);
-    //   }
-    //   console.log(error);
-    // });
   }
 
-  handleSignUp() {
+  handleSignUp(event) {
     alert("Sign Up is under construction");
 
-    //
-    //
     // firebase.auth().createUserWithEmailAndPassword('mgupta4@gmail.com', 'Stevens135455').catch(function(error) {
     //   // Handle Errors here.
     //   var errorCode = error.code;
@@ -78,7 +60,12 @@ class LoginComponent extends React.Component {
   }
 }
 
-export default LoginComponent;
+
+function mapStateToProps(state) {
+  return state;
+}
+
+export default connect(mapStateToProps)(LoginComponent);
 
 const loginStyles = {
   lineHeight: '100vh'

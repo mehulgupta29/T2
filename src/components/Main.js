@@ -4,6 +4,9 @@ import React from 'react';
 import LandingComponent from "./Landing/LandingComponent";
 import LoginComponent from './Startup/LoginComponent';
 import * as firebase from 'firebase';
+import {connect} from 'react-redux';
+import actions from '../actions/actions';
+import * as _ from 'lodash';
 
 // Initialize Firebase
 const config = {
@@ -26,6 +29,9 @@ class AppComponent extends React.Component {
   }
 
   componentWillMount() {
+    const {dispatch} = this.props;
+
+    // Initializing firebase
     firebase.initializeApp(config);
 
     /**
@@ -36,23 +42,29 @@ class AppComponent extends React.Component {
     firebase.auth().onAuthStateChanged(user => {
       if (user) {
         // User is signed in.
-        this.setState({isUserLoggedIn: true, googleUser: user});
+        this.setState({isUserLoggedIn: true});
+        dispatch(actions.setNewUserData(user));
       }
     });
   }
 
   render() {
-    const {isUserLoggedIn, googleUser} = this.state;
+    const {isUserLoggedIn} = this.state;
+    const {currentUser} = this.props;
 
     return (
       <div style={appStyles}>
-        {isUserLoggedIn ? <LandingComponent googleUser={googleUser}/> : <LoginComponent firebase={firebase}/>}
+        {isUserLoggedIn && !_.isEmpty(currentUser) ? <LandingComponent user={currentUser}/> : <LoginComponent firebase={firebase}/>}
       </div>
     );
   }
 }
 
-export default AppComponent;
+function mapStateToProps(state) {
+  return state;
+}
+
+export default connect(mapStateToProps)(AppComponent);
 
 const appStyles = {
   textAlign: 'center',
