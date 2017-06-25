@@ -3,6 +3,8 @@ import * as firebase from 'firebase';
 import {connect} from 'react-redux';
 import actions from '../../actions/actions';
 import HeaderComponent from './Header/HeaderComponent';
+import BodyComponent from './Body/BodyComponent';
+import FooterComponent from './Footer/FooterComponent';
 
 class LandingComponent extends React.Component {
 
@@ -14,9 +16,13 @@ class LandingComponent extends React.Component {
 
   render() {
     return (
-      <HeaderComponent
-        handleUserLogout={(event) => this.handleUserLogout(event)}
-        {... this.props}/>
+      <div className="landing-component-root">
+        <HeaderComponent
+          handleUserLogout={(event) => this.handleUserLogout(event)}
+          {... this.props}/>
+        <BodyComponent {... this.props} />
+        <FooterComponent {... this.props} />
+      </div>
     );
   }
 
