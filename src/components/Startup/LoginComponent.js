@@ -33,10 +33,12 @@ class LoginComponent extends React.Component {
       this.setState({userToken: token});
 
       // The signed-in user info.
-      dispatch(actions.setNewUserData(result.user));
-
-      console.log("Google User: ", token, " user: ", result.user);
-
+      const user = result.user;
+      const USER = {
+        email: user.email,
+        uid: user.uid
+      };
+      dispatch(actions.setNewUserData(USER));
     }).catch(error => {
 
       // if (errorCode === 'auth/wrong-password') {

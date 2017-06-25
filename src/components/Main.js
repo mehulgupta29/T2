@@ -14,7 +14,7 @@ const config = {
   authDomain: "treatster2-31d5f.firebaseapp.com",
   databaseURL: "https://treatster2-31d5f.firebaseio.com",
   projectId: "treatster2-31d5f",
-  storageBucket: "",
+  storageBucket: "treatster2-31d5f.appspot.com",
   messagingSenderId: "879934100019"
 };
 
@@ -33,7 +33,6 @@ class AppComponent extends React.Component {
 
     // Initializing firebase
     firebase.initializeApp(config);
-
     /**
      * Checking if the user is already logged in.
      * If true, route the user to LandingComponent
@@ -43,7 +42,11 @@ class AppComponent extends React.Component {
       if (user) {
         // User is signed in.
         this.setState({isUserLoggedIn: true});
-        dispatch(actions.setNewUserData(user));
+        const USER = {
+          email: user.email,
+          uid: user.uid
+        };
+        dispatch(actions.setNewUserData(USER, firebase));
       }
     });
   }
