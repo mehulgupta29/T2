@@ -35,7 +35,7 @@ class BodyComponent extends React.Component {
       breakpoints: {lg: 1000, md: 800},
       cols: {lg: 12, md: 10},
       width: 1200,
-      rowHeight: 30
+      rowHeight: 20
     };
   }
 

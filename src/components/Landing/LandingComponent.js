@@ -20,7 +20,7 @@ class LandingComponent extends React.Component {
         <HeaderComponent
           handleUserLogout={(event) => this.handleUserLogout(event)}
           {... this.props}/>
-        <BodyComponent {... this.props} />
+        <BodyComponent {... this.props} firebase={firebase}/>
         <FooterComponent {... this.props} />
       </div>
     );
