@@ -12,13 +12,11 @@ export default function reducer(state, action){
 
       // we are storing users list in firebase
       const database = action.firebase.database();
-
       let usersList = [];
       database.ref('/').once('value', snapshot => {
         usersList = _.has(snapshot.val(), 'users') ?
           putUserIfNotExists(snapshot.val().users, action.data) : putUserIfNotExists([], action.data);
-
-        database.ref('/').set({users: usersList});
+        database.ref('/').set(Object.assign({}, snapshot.val(), {users: usersList}));
       });
 
       // storing currentUser in redux store
@@ -31,6 +29,19 @@ export default function reducer(state, action){
 
     case actionTypes.LOGOUT:
       return Object.assign({}, state, {currentUser: null});
+
+
+    case actionTypes.SET_NEW_BET:
+      // we are storing users list in firebase
+      const databaseSetNewBet = action.firebase.database();
+      let betsList = [action.data];
+      databaseSetNewBet.ref('/').once('value', snapshot => {
+        betsList = _.has(snapshot.val(), 'bets') ? snapshot.val().bets.concat(action.data) : [action.data];
+        databaseSetNewBet.ref('/').set(Object.assign({}, snapshot.val(), {bets: betsList}));
+      });
+
+      // adding new bet to the redux store
+      return Object.assign({}, state, {bets: betsList});
 
     default :
       return state;

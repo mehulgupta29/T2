@@ -1,7 +1,8 @@
 export const actionTypes = {
   SET_NEW_USER_DATA: "SET_NEW_USER_DATA",
   LOGOUT: "LOGOUT",
-  PUT_USERS: "PUT_USERS"
+  PUT_USERS: "PUT_USERS",
+  SET_NEW_BET: "SET_NEW_BET"
 };
 
 const actions = {
@@ -21,6 +22,13 @@ const actions = {
   logout() {
     return {
       type: actionTypes.LOGOUT
+    }
+  },
+  setNewBet(betData, firebase) {
+    return {
+      type: actionTypes.SET_NEW_BET,
+      data: betData,
+      firebase: firebase
     }
   }
 };
